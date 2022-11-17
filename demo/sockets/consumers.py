@@ -47,7 +47,10 @@ class DummyGoogleClient:
     def dummy_tts(self, data):
         """"""
         return {
-            "bytes_data": "",
+            "bytes_data": r"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+                          r"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+                          r"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+                          r"\x00\x00\x00\x00\x00\x00\x00",
         }
 
 
@@ -103,7 +106,7 @@ class VoiceConsumer(SyncConsumer):
 
         self.send({
             "type": "websocket.send",
-            "text": event,
+            "text": stt_response["text"],
         })
 
     def websocket_disconnect(self, event):
