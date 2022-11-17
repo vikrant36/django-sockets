@@ -9,7 +9,7 @@ from .consumers import DummyGoogleClient
 
 def get_questions():
     """"""
-    return [[{"id": 1, "question": "Hi how are you"}]]
+    return [{"id": 1, "question": "Hi how are you"}]
 
 
 class AnswerApiViewSet(APIView):
