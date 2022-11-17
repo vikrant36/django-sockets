@@ -31,14 +31,24 @@ class AsyncVoiceConsumer(AsyncConsumer):
 class VoiceConsumer(SyncConsumer):
 
     def websocket_connect(self, event):
+        print("connected")
         self.send({
             "type": "websocket.accept",
         })
 
     def websocket_receive(self, event):
+        print("received")
+        print(event)
         self.send({
             "type": "websocket.send",
-            "text": event["text"],
+            "text": event,
+        })
+
+    def websocket_disconnect(self, event):
+        """"""
+        print("disconnected", event)
+        self.send({
+            "type": "websocket.disconnect",
         })
 
 
