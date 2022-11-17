@@ -72,9 +72,9 @@ class VoiceConsumer(SyncConsumer):
         ques_end = False
 
         stt_response = self.local_dummy_client.dummy_stt(event)
-        dialogue_response = self.local_dummy_client.dummy_dialogue(stt_response.text)
+        dialogue_response = self.local_dummy_client.dummy_dialogue(stt_response['text'])
         if dialogue_response["is_command"]:
-            tts_response = self.local_dummy_client.dummy_tts(dialogue_response.data)
+            tts_response = self.local_dummy_client.dummy_tts(dialogue_response['data'])
             self.send({
                 "type": "websocket.send",
                 "text": tts_response["bytes_data"],
@@ -89,7 +89,7 @@ class VoiceConsumer(SyncConsumer):
             'answer': stt_response["text"]
         }
 
-        Answer.objects.create(answer_obj)
+        Answer.objects.create(**answer_obj)
 
         # if ques_end:
         #     if len(self.ques_list) == 0:
