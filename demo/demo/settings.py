@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # "voice",
     "call",
-    "channels"
+    "channels",
+    "sockets"
 ]
 
 MIDDLEWARE = [

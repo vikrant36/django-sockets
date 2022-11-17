@@ -1,5 +1,6 @@
 from channels.consumer import AsyncConsumer, SyncConsumer
 import json
+from sockets.models import Answer
 
 
 class AsyncVoiceConsumer(AsyncConsumer):
@@ -28,7 +29,32 @@ class AsyncVoiceConsumer(AsyncConsumer):
         })
 
 
+class DummyGoogleClient:
+    """contains dummy google client functions"""
+    def dummy_stt(self, data):
+        """"""
+        return {
+            "text": "dummy data from dummy stt"
+        }
+
+    def dummy_dialogue(self, data):
+        """"""
+        return {
+            "data": None,
+            "is_command": False
+        }
+
+    def dummy_tts(self, data):
+        """"""
+        return {
+            "bytes_data": "",
+        }
+
+
 class VoiceConsumer(SyncConsumer):
+
+    local_dummy_client = DummyGoogleClient()
+    ques_list = [{"id": 1, "question": "Hi how are you"}]
 
     def websocket_connect(self, event):
         print("connected")
@@ -38,7 +64,41 @@ class VoiceConsumer(SyncConsumer):
 
     def websocket_receive(self, event):
         print("received")
-        print(event)
+        print(event, '/n')
+        # Todo create a functionality to find when question has ended
+        ques_end = False
+
+        stt_response = self.local_dummy_client.dummy_stt(event)
+        dialogue_response = self.local_dummy_client.dummy_dialogue(stt_response.text)
+        if dialogue_response["is_command"]:
+            tts_response = self.local_dummy_client.dummy_tts(dialogue_response.data)
+            self.send({
+                "type": "websocket.send",
+                "text": tts_response["bytes_data"],
+            })
+        answer_obj = {
+            'candidate_id': 1,
+            'candidate_name': "John",
+            'question_id': 1,
+            'question': "How are you?",
+            'answer': stt_response["text"]
+        }
+
+        Answer.objects.create(answer_obj)
+
+        if ques_end:
+            if len(self.ques_list) == 0:
+                self.send({
+                    "type": "websocket.send",
+                    "text": "End Interview"
+                })
+            cur_ques = self.ques_list.pop()
+            ques_tts_response = self.local_dummy_client.dummy_tts(cur_ques)
+            self.send({
+                "type": "websocket.send",
+                "text": ques_tts_response["bytes_data"]
+            })
+
         self.send({
             "type": "websocket.send",
             "text": event,
@@ -50,6 +110,7 @@ class VoiceConsumer(SyncConsumer):
         self.send({
             "type": "websocket.disconnect",
         })
+
 
 
 from channels.generic.websocket import WebsocketConsumer
