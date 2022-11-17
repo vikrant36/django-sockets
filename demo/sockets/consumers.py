@@ -76,6 +76,8 @@ class VoiceConsumer(SyncConsumer):
                 "type": "websocket.send",
                 "text": tts_response["bytes_data"],
             })
+
+        # this data will be coming from frontend
         answer_obj = {
             'candidate_id': 1,
             'candidate_name': "John",
@@ -110,7 +112,6 @@ class VoiceConsumer(SyncConsumer):
         self.send({
             "type": "websocket.disconnect",
         })
-
 
 
 from channels.generic.websocket import WebsocketConsumer

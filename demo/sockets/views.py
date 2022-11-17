@@ -3,8 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Answer
 from .serializers import AnswerSerializer
+from .consumers import DummyGoogleClient
 # Create your views here.
 
+
+def get_questions():
+    """"""
+    return [[{"id": 1, "question": "Hi how are you"}]]
 
 class AnswerApiViewSet(APIView):
     """"""
@@ -28,3 +33,18 @@ class AnswerApiViewSet(APIView):
             serializer = self.serializer_class(seed)
             return Response(serializer.data)
 
+
+class QuestionApiViewSet(APIView):
+    """"""
+    question_list = get_questions()
+    localGoogleClient = DummyGoogleClient()
+
+    def get(self, request, pk=None, format=None):
+        """"""
+        cur_ques = self.question_list.pop()
+        tts_res = self.localGoogleClient.dummy_tts(cur_ques)
+        res = {
+            "question": cur_ques,
+            "audio": tts_res
+        }
+        return Response(res)
