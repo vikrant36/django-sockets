@@ -86,18 +86,18 @@ class VoiceConsumer(SyncConsumer):
 
         Answer.objects.create(answer_obj)
 
-        if ques_end:
-            if len(self.ques_list) == 0:
-                self.send({
-                    "type": "websocket.send",
-                    "text": "End Interview"
-                })
-            cur_ques = self.ques_list.pop()
-            ques_tts_response = self.local_dummy_client.dummy_tts(cur_ques)
-            self.send({
-                "type": "websocket.send",
-                "text": ques_tts_response["bytes_data"]
-            })
+        # if ques_end:
+        #     if len(self.ques_list) == 0:
+        #         self.send({
+        #             "type": "websocket.send",
+        #             "text": "End Interview"
+        #         })
+        #     cur_ques = self.ques_list.pop()
+        #     ques_tts_response = self.local_dummy_client.dummy_tts(cur_ques)
+        #     self.send({
+        #         "type": "websocket.send",
+        #         "text": ques_tts_response["bytes_data"]
+        #     })
 
         self.send({
             "type": "websocket.send",
