@@ -11,6 +11,7 @@ def get_questions():
     """"""
     return [[{"id": 1, "question": "Hi how are you"}]]
 
+
 class AnswerApiViewSet(APIView):
     """"""
 
