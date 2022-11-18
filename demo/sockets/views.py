@@ -42,10 +42,20 @@ class QuestionApiViewSet(APIView):
 
     def get(self, request, pk=None, format=None):
         """"""
+        if len(self.question_list)==0:
+            res = {
+            "question": "HUME nahi puchna",
+            "audio": None,
+            "isEnded": True
+            }
+            return Response(res)
+
         cur_ques = self.question_list.pop()
         tts_res = self.localGoogleClient.dummy_tts(cur_ques)
         res = {
             "question": cur_ques,
-            "audio": tts_res
+            "audio": tts_res,
+            "isEnded": False
+
         }
         return Response(res)
