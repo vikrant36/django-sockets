@@ -44,9 +44,9 @@ class QuestionApiViewSet(APIView):
         """"""
         if len(self.question_list)==0:
             res = {
-            "question": "HUME nahi puchna",
-            "audio": None,
-            "isEnded": True
+                "question": "End of Line",
+                "audio": None,
+                "isEnded": True
             }
             return Response(res)
 
