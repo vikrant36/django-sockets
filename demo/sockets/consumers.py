@@ -1,7 +1,7 @@
 from channels.consumer import AsyncConsumer, SyncConsumer
 import json
 from sockets.models import Answer
-from ..utils.clients.apiClient import ApiClient
+from utils.clients.apiClient import ApiClient
 
 
 class AsyncVoiceConsumer(AsyncConsumer):
