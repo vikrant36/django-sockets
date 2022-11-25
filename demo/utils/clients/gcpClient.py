@@ -5,13 +5,8 @@ from google.cloud import speech
 from google.cloud import texttospeech
 from google.oauth2 import service_account
 # credentials = service_account.Credentials.from_service_account_file("319006-603d31ac86ca.json")
-
-
 from base.exceptions.exceptions import CustomServerError
 from constants import WAVENET_SERVICE, LANGUAGE_CODE, AUDIO_PITCH, SPEECH_RATE
-
-
-
 
 
 class VoiceService:
@@ -82,11 +77,10 @@ class VoiceService:
             return CustomServerError(e)
 
     def stt_chunks(self, data):
-        rate = 16000
         print("stt_recieved")
         config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=rate,
+            sample_rate_hertz=SPEECH_RATE,
             language_code=LANGUAGE_CODE,
         )
         streaming_config = speech.StreamingRecognitionConfig(
